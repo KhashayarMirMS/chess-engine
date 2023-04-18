@@ -1,0 +1,37 @@
+{
+    "cSpell.words": [
+        "chessengine",
+        "rnbqkbnr"
+    ],
+    "editor.formatOnSave": true,
+    "todohighlight.keywords": [
+        "SECTION",
+        "TODO",
+        "NOTE",
+    ],
+    "todohighlight.defaultStyle": {
+        "color": "#212121",
+        "backgroundColor": "#30A070",
+        "overviewRulerColor": "#30A070",
+        "cursor": "pointer",
+    },
+    "python.languageServer": "Pylance",
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "120"
+    ],
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+    "python.linting.flake8Args": [
+        "--max-line-length=120",
+        "--extend-ignore=E203"
+    ],
+    "isort.args": [
+        "--multi-line=3",
+        "--trailing-comma",
+        "--force-grid-wrap=0",
+        "--use-parentheses",
+        "--line-width=120",
+    ]
+}
