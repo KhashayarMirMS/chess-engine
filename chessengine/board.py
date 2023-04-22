@@ -1,7 +1,7 @@
 from typing import Optional, cast
 
 from chessengine.color import Color
-from chessengine.piece import Piece, all_pieces
+from chessengine.piece import Pawn, Piece, all_pieces
 from chessengine.utils.board import Coords, get_coords_as_tuple
 from chessengine.utils.pgn import square_to_pgn
 from chessengine.utils.print import PrintStyle
@@ -29,6 +29,7 @@ class Board:
         self.squares: list[list[Optional[Piece]]] = [[None] * 8 for _ in range(8)]
         self._highlight_moves_for: Optional[tuple[int, int]] = None
         self.turn = Color.WHITE
+        self.history: list[tuple[Piece, tuple[int, int], tuple[int, int]]] = []
 
     def from_fen(self, fen: str, turn=Color.WHITE):
         self.turn = turn
@@ -70,7 +71,7 @@ class Board:
 
     def move(self, from_: Coords, to: Coords):
         # TODO probably store somewhere if a piece has been taken and add support for
-        # castling, promotion, en passant
+        # castling, promotion
         if not self.does_player_own(from_):
             raise Exception("invalid square")
 
@@ -82,8 +83,15 @@ class Board:
         if not from_square.is_move_valid(self, from_, to):
             raise Exception("invalid move")
 
+        if len(self.history) > 0 and isinstance(from_square, Pawn) and from_square.is_en_passant(self, from_, to):
+            # handle en passant
+            _, _, taken_pawn_position = self.history[-1]
+            self.squares[taken_pawn_position[0]][taken_pawn_position[1]] = None
+
         self.squares[to[0]][to[1]] = from_square
         self.squares[from_[0]][from_[1]] = None
+
+        self.history.append((from_square, from_, to))
 
         self._highlight_moves_for = None
         self.turn = Color.BLACK if self.turn == Color.WHITE else Color.WHITE
