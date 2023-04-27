@@ -24,6 +24,9 @@ class Pawn(Piece):
         return 1 if self.color == Color.WHITE else 6
 
     def _get_en_passant(self, board: "Board", position: tuple[int, int]) -> Optional[tuple[int, int]]:
+        if len(board.history) < 1:
+            return None
+
         last_move_piece, last_move_from, last_move_to = board.history[-1]
 
         # last move should be from a pawn and should be two squares (first move)
